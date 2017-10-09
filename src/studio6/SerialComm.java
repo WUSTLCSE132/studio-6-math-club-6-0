@@ -27,10 +27,40 @@ public class SerialComm {
 	}
 		
 	// TODO: Add writeByte() method from Studio 5
-	
+	public void writeByte(byte x) throws SerialPortException {
+		if(debug) {
+			port.writeByte(x);
+			System.out.println(x);
+		}
+	}
 	// TODO: Add available() method
-	
+	public boolean available() throws SerialPortException {
+		int x = port.getInputBufferBytesCount();
+		if(x >= 1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	// TODO: Add readByte() method	
-	
+	public byte readByte() throws SerialPortException {
+		if (!debug) {
+			byte x = port.readBytes(1)[0];
+			System.out.println(String.format("%02x", x));
+			return x;
+		} else {
+			return 0;
+		}
+	}
 	// TODO: Add a main() method
+	public static void main(String[] args) throws SerialPortException {
+		SerialComm a1 = new SerialComm("COM5");
+		while(true){
+			if(a1.available()){	
+			byte storedData = a1.readByte();
+			System.out.println((char)storedData);
+			}
+		}
+		
+	}
 }
